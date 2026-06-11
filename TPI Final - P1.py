@@ -1,5 +1,7 @@
 #Importacion modulo nativo csv para manipulacion de archivos
 import csv
+#Importacion modulo nativo os para manipulacion de archivos
+import os
 
 #--Funcion inicializacion del programa y funciones del menu
 #Funcion para inciar el programa y visualizacion del menu
@@ -7,7 +9,6 @@ def iniciar_programa():
 
 #Llamado de funcion obtener_datos() para tener disponible la informacion
     datos = obtener_datos()
-    print(datos)
 #Menu de opciones
     while True:
         print("---- Gestión de Datos de Países ----\n")
@@ -107,21 +108,52 @@ def obtener_datos():
 def grabar_datos_nuevo_pais(datos):
     print("A continuación deberá ingresar: nombre, poblacion, superficie y continente al que pertenece el pais que desea añadir.\n")
 
+#Llamado de funciones auxiliares y guardado de su valor de retorno en las variables pertinentes 
     nombre_nuevo_pais = validar_nombre_pais(datos)
     poblacion_nuevo_pais = validar_poblacion_pais()
     superficie_nuevo_pais = validar_superficie_pais()
     continente_nuevo_pais = validar_continente_pais()
 
+#Variable para almacenar la ruta del archivo a escribir
+    ruta_archivo = "data/paises.csv"
 
-    
+#Bloque try/except. Almacena la logica para la escritura del archivo y manejo de posibles errores
+    try:
+#Bloque de escritura iniciado con with para cierre seguro y automatico del archivo una vez terminada la tarea
+        with open( ruta_archivo, "a", newline="", encoding="utf-8") as archivo:
 
+#Emplea DictWriter ya que se estan almacenando los datos de los distintos paises en diccionarios dentro de la lista general "datos"
+            escritor = csv.DictWriter( archivo, fieldnames=["nombre","poblacion","superficie","continente"])
 
+#Funcion writerow del objeto escritor que se creo en la linea anterior. Escribira los datos para el pais con la estructura de diccionario
+#Añadira una fila al final del archivo
+            escritor.writerow( {
+                "nombre": nombre_nuevo_pais,
+                "poblacion": poblacion_nuevo_pais,
+                "superficie": superficie_nuevo_pais,
+                "continente": continente_nuevo_pais
+                } )
 
+#Manejo de errores especificos y previsibles. Si se dispara un error, se realizara el return para frenar la ejecucion de la funcion.
+#Manejo de error caso que no exista el archivo
+    except FileNotFoundError:
+        print("Error: no se encontro el archivo en la ruta especificada")
+        return
+#Manejo de error caso que no se tengan permisos para editar el archivo o este abierto por otra aplicacion
+    except PermissionError:
+        print("Error: no posee permisos para la escritura del archivo. Verifique que no este siendo utilizado por otra aplicacion.")
+        return
+#Manejo de error caso que falle la codificacion
+    except UnicodeDecodeError:
+        print("Error: el formato de codificacion de caracteres no es compatible. No se pudo leer el archivo.")
+        return
 
+#Manejo de error generico ( re de seguridad ). Se manifestara para todos aquellos errores no contemplados previamente en la funcion.
+    except Exception as error:
+        print(f"Ocurrio un error inesperado: { type( error ).__name__} = { error }")
+        return
 
-
-
-
+#Si se logro realizar la escritura correctamente imprimira mensaje de exito por consola
     print("")
     print(f"Se añadió con éxito el país '{ nombre_nuevo_pais }' con la siguiente información:\n")
     print(f"Poblacion: { poblacion_nuevo_pais }")
@@ -193,7 +225,7 @@ def validar_nombre_pais( datos ):
             elif not all( caracter.isalpha() or caracter.isspace() or caracter in "'-" for caracter in nuevo_pais ):
                 raise ValueError("El nombre del país no acepta caracteres especiales ( $, #, &, etc ).\n")
 #Busca en archivo cvs la existencia del pais y genera el error si la encuentra
-            elif es_duplicado( nuevo_pais, datos ):
+            elif existe_pais_en_base_datos( nuevo_pais, datos ):
                 raise ValueError("El país ya existe en la base de datos. No se permiten duplicados.\n")
 
             return nuevo_pais
@@ -281,26 +313,23 @@ def validar_continente_pais():
         except ValueError as error :
             print( error )
 
-#Verifica que no existan nombres duplicados en el archivo csv
-def es_duplicado( nuevo_pais, datos ):
+#Verifica si existen coincidencias de nombres en el archivo csv
+def existe_pais_en_base_datos( pais, datos ):
 
 #Variable bandera, si se encuentra coincidencia entre nombres de paises cambia a true y se retorna al final de la funcion
-    es_duplicado = False
+    existe_pais = False
 
 #Bucle for recorrera la lista datos que almacena los diccionarios que guardan los datos de los paises
 #Comparara los valores de las llaves "nombre" dentro de los diccionarios hasta encontrar coincidencia o terminar de recorrer la lista 
-    for pais in datos:
+    for pais_en_base_datos in datos:
 #Si encuentra coincidencia significa que el nombre ya existe en el archivo csv. Cambia la bandera a true y rompe el bucle
-        if pais["nombre"] == nuevo_pais:
-            es_duplicado = True
+        if pais_en_base_datos["nombre"] == pais:
+            existe_pais = True
             break
 
-#Retorna False si no se encontro el duplicado, retorna True si ya existe el nombre
-    return es_duplicado
+#Retorna False si no se encontraron coincidencias, retorna True si ya existe el nombre
+    return existe_pais
 
-
-def buscar_pais( datos ):
-    return True
 
 
 
