@@ -1,6 +1,7 @@
 #Importacion modulo nativo csv para manipulacion de archivos
 import csv
 
+#--Funcion inicializacion del programa y funciones del menu
 #Funcion para inciar el programa y visualizacion del menu
 def iniciar_programa():
 
@@ -10,12 +11,12 @@ def iniciar_programa():
 #Menu de opciones
     while True:
         print("---- Gestión de Datos de Países ----\n")
-        print("1. Añadir país a la base de datos")
-        print("2. Actualizar datos ( Población y Superficie )")
-        print("3. Visualizar información sobre países")
-        print("4. Filtrar países ( Continente, población o superficie )")
-        print("5. Ordenar Países ")
-        print("6. Ver estadísticas ")
+        print("1. Añadir país a la base de datos.")
+        print("2. Actualizar datos ( Población y Superficie ).")
+        print("3. Visualizar información sobre países.")
+        print("4. Filtrar países ( Continente, población o superficie ).")
+        print("5. Ordenar Países.")
+        print("6. Ver estadísticas.")
         print("7. Salir\n")
 
 #Pide al usuario que opte por una opcion
@@ -37,7 +38,7 @@ def iniciar_programa():
 
 #Opcion 1 - Añadir pais a la base de datos
         if opcion == 1:
-            print("opcion 1")
+            grabar_datos_nuevo_pais(datos)
 
 #Opcion 2 - Actualizar datos de 1 pais
         elif opcion == 2:
@@ -63,14 +64,6 @@ def iniciar_programa():
         elif opcion == 7:
             print("opcion 7")
         
-
-
-
-
-
-
-
-
 
 #!Funcion para leer y obtener los datos del archivo .csv con los datos de los paises
 def obtener_datos():
@@ -110,13 +103,30 @@ def obtener_datos():
         print(f"Error inesperado: { type(e).__name__ } = { e }.")
         return []
 
-
 #!Funcion para escribir datos en el archivo .csv con los datos ingresados por el usuario
 def grabar_datos_nuevo_pais(datos):
-    print("Datos guardados")
+    print("A continuación deberá ingresar: nombre, poblacion, superficie y continente al que pertenece el pais que desea añadir.\n")
+
+    nombre_nuevo_pais = validar_nombre_pais(datos)
+    poblacion_nuevo_pais = validar_poblacion_pais()
+    superficie_nuevo_pais = validar_superficie_pais()
+    continente_nuevo_pais = validar_continente_pais()
+
+
+    
 
 
 
+
+
+
+
+
+    print("")
+    print(f"Se añadió con éxito el país '{ nombre_nuevo_pais }' con la siguiente información:\n")
+    print(f"Poblacion: { poblacion_nuevo_pais }")
+    print(f"Superficie en kilometros cuadrados: { superficie_nuevo_pais }")
+    print(f"Continente: { continente_nuevo_pais }\n")
 
 def actualizar_datos_pais():
     print("Datos actualizados")
@@ -155,7 +165,142 @@ def salir():
     print("Se cerro el programa")
 
 
+#--Funciones auxiliares
 
+#**Funciones de validacion de inputs
+#Validacion de nombre de pais
+def validar_nombre_pais( datos ):
+#Ciclo while para pedir el dato al usuario hasta que ingrese uno valido
+    while True:
+        try:
+            nuevo_pais = input("Ingrese nombre del país que desea añadir: ").strip().title()
+#Valida que se hay ingresado algo por teclado
+            if len(nuevo_pais) == 0:
+                raise ValueError("Debe ingresar el nombre del país que desea añadir.\n")
+#Impone un minimo de caracteres para el nombre del pais
+            elif len(nuevo_pais) < 3:
+                raise ValueError("El largo del nombre del nuevo país no puede ser inferior a 3 caracteres\n")
+#Impone un maximo de caracteres para el nombre
+            elif len(nuevo_pais) > 60:
+                raise ValueError("El largo del nombre del país no puede superar los 60 caracteres\n")
+#Emite error en caso de que se hayan incluido numeros en el nombre
+            elif any(caracter.isdigit() for caracter in nuevo_pais):
+                raise ValueError("El nombre del país no puede contener números.\n")
+
+#La funcion all() evalua caracter por caracter. Si un caracter incumple una de las condiciones dentro de all(),
+#retornara False y el operador not, invertira el valor booleano a True,
+#haciendo que se ingrese al bloque elif y dispare el error personalizado.
+            elif not all( caracter.isalpha() or caracter.isspace() or caracter in "'-" for caracter in nuevo_pais ):
+                raise ValueError("El nombre del país no acepta caracteres especiales ( $, #, &, etc ).\n")
+#Busca en archivo cvs la existencia del pais y genera el error si la encuentra
+            elif es_duplicado( nuevo_pais, datos ):
+                raise ValueError("El país ya existe en la base de datos. No se permiten duplicados.\n")
+
+            return nuevo_pais
+
+        except ValueError as error:
+            print(error)
+            continue
+
+#Validacion de la poblacion
+def validar_poblacion_pais():
+#Ciclo while para pedir el dato al usuario hasta que ingrese uno valido
+    while True:
+        try:
+
+            poblacion_nuevo_pais = input("Ingrese la población del país que desea añadir: ").strip()
+#Valida que se hay ingresado algo por teclado
+            if len(poblacion_nuevo_pais) == 0:
+                raise ValueError("Debe ingresar un dato numerico válido para la población del país.\n")
+#Verifica que se este ingresando un numero entero
+            elif not poblacion_nuevo_pais.isdigit():
+                raise ValueError("Dato ingresado inválido. Debe ingresar un número entero mayor o igual a 1.\n")
+#Verifica que la poblacion sea al menos 1
+            elif int(poblacion_nuevo_pais) < 1:
+                raise ValueError("La población de un país no puede ser un número inferior a uno\n")
+#Impone limite de poblacion para el pais. evita que se ingresen numeros excesivos o absurdos )
+            elif int(poblacion_nuevo_pais) > 2000000000:
+                raise ValueError("La población del país no puede superar los dos mil millones de habitantes\n")
+
+            return poblacion_nuevo_pais
+        
+        except ValueError as error:
+            print(error)
+            continue
+
+#Validacion de la superficie
+def validar_superficie_pais():
+#Ciclo while para pedir el dato al usuario hasta que ingrese uno valido
+    while True:
+        try:
+
+            superficie_nuevo_pais = input("Ingrese la superficie en kilometros cuadrados del país que desea añadir: ").strip()
+#Verifica que se hay ingresado algo por teclado
+            if len(superficie_nuevo_pais) == 0:
+                raise ValueError("Debe ingresar un dato numerico válido para la superficie del país.\n")
+
+#Verifica que la superficie en km2 sea un numero. Implementa float porque puede ser un numero con decimales ( ej: Ciudad del Vaticano 0.44 mk2 )
+            try:
+                numero = float(superficie_nuevo_pais)
+            except ValueError:
+                raise ValueError("Dato ingresado inválido. Debe ingresar un número para este campo.\n")
+#La superficie en km2 no puede ser menor o igual a cero. Emite error
+            if numero <= 0:
+                raise ValueError("La superficie en kilometros cuadrados del país debe ser un valor mayor a cero\n")
+
+            return superficie_nuevo_pais
+        
+        except ValueError as error:
+            print( error )
+            continue
+
+#Validacion del continente
+def validar_continente_pais():
+#Lista con los nombres de los continentes validos
+    continentes_validos = [ "America", "Europa", "Asia", "Africa", "Oceania", "Antartida", "América", "África", "Antártida", "Oceanía" ]
+
+#Ciclo while para pedir el dato al usuario hasta que ingrese uno valido
+    while True:
+        try:
+            nuevo_continente = input("Ingrese nombre del continente en el cual se encuentra el país que desea añadir: ").strip().capitalize()
+
+            if len( nuevo_continente ) == 0:
+                raise ValueError("Debe ingresar el nombre del contintente al que pertenece el país.\n")
+
+#La funcion all() evalua caracter por caracter. Si un caracter incumple una de las condiciones dentro de all(),
+#retornara False y el operador not, invertira el valor booleano a True,
+#haciendo que se ingrese al bloque elif y dispare el error personalizado.
+            elif not all( caracter.isalpha() or caracter.isspace() or caracter in "'-" for caracter in nuevo_continente ):
+                raise ValueError("El nombre del continente no acepta números ni caracteres especiales ( $, #, &, etc ).\n")
+
+            elif nuevo_continente not in continentes_validos:
+                raise ValueError(f"No se encontraron coincidencias para '{ nuevo_continente }'. Ingrese un continente válido.\n")
+
+            return nuevo_continente
+
+        except ValueError as error :
+            print( error )
+
+#Verifica que no existan nombres duplicados en el archivo csv
+def es_duplicado( nuevo_pais, datos ):
+
+#Variable bandera, si se encuentra coincidencia entre nombres de paises cambia a true y se retorna al final de la funcion
+    es_duplicado = False
+
+#Bucle for recorrera la lista datos que almacena los diccionarios que guardan los datos de los paises
+#Comparara los valores de las llaves "nombre" dentro de los diccionarios hasta encontrar coincidencia o terminar de recorrer la lista 
+    for pais in datos:
+#Si encuentra coincidencia significa que el nombre ya existe en el archivo csv. Cambia la bandera a true y rompe el bucle
+        if pais["nombre"] == nuevo_pais:
+            es_duplicado = True
+            break
+
+#Retorna False si no se encontro el duplicado, retorna True si ya existe el nombre
+    return es_duplicado
+
+
+def buscar_pais( datos ):
+    return True
 
 
 
