@@ -47,9 +47,9 @@ def iniciar_programa():
         elif opcion == 2:
             actualizar_datos_pais( datos )
 
-#Opcion 3 - Visualizar informacion sobre los paises ( muestra 1 o todos segun opte el usuario )
+#Opcion 3 - Visualizar informacion sobre los pais
         elif opcion == 3:
-            print("opcion 3")
+            buscar_pais_nombre( datos )
 
 #Opcion 4 - Filtrar paises segun continente, poblacion o superficie
         elif opcion == 4:
@@ -65,8 +65,8 @@ def iniciar_programa():
 
 #Opcion 7 - Salir del programa
         elif opcion == 7:
-            print("opcion 7")
-        
+            salir()
+            break
 
 #!Funcion para leer y obtener los datos del archivo .csv con los datos de los paises
 def obtener_datos():
@@ -153,7 +153,7 @@ def grabar_datos_nuevo_pais(datos):
         return
 #Manejo de error caso que falle la codificacion
     except UnicodeDecodeError:
-        print("Error: el formato de codificacion de caracteres no es compatible. No se pudo leer el archivo.")
+        print("Error: el formato de codificacion de caracteres no es compatible.")
         return
 
 #Manejo de error generico ( re de seguridad ). Se manifestara para todos aquellos errores no contemplados previamente en la funcion.
@@ -219,7 +219,7 @@ def actualizar_datos_pais( datos ):
         return
 #Manejo de error caso que falle la codificacion
     except UnicodeDecodeError:
-        print("Error: el formato de codificacion de caracteres no es compatible. No se pudo leer el archivo.")
+        print("Error: el formato de codificacion de caracteres no es compatible.")
         return
 
 #Manejo de error generico ( re de seguridad ). Se manifestara para todos aquellos errores no contemplados previamente en la funcion.
@@ -229,11 +229,31 @@ def actualizar_datos_pais( datos ):
     
     print(f"Pais '{ nombre_pais_a_modificar }' actualizado correctamente.\n")
 
-def buscar_pais_nombre():
-#?Debe pedir nombre pais evaluarlo y mostrar por consola los datos para ese pais
-#?Debe informar con claridad caso que no se encuentre el pais
-#?Debe informar con claridad si el usuario no ingreso caracteres al hacer "enter"
-    print("Pais unico")
+def buscar_pais_nombre( datos ):
+
+    print("Buscar País:")
+
+#Valida y pide solo el nombre del país. Bandera en false porque que exista en la base de datos no es un error para esta funcion
+
+    nombre_pais_a_consultar = validar_nombre_pais( datos, verificar_duplicado=False )
+
+#Verifica que exista el pais que se quiere mostrar
+    if not existe_pais_en_base_datos( nombre_pais_a_consultar ,datos ):
+        print("El país no se encuentra registrado. ")
+        return
+
+#Bucle for para recorrer la lista de diccionarios con la informacion de los paises. 
+#Ubicar el seleccionado e imprimir sus valores por consola
+    for pais in datos:
+        if pais["nombre"] == nombre_pais_a_consultar:
+            print("")
+            print("País encontrado con éxito:\n")
+            print(f"Nombre: { pais['nombre'] }")
+            print(f"Poblacion: { pais['poblacion'] } ")
+            print(f"Superficie: { pais['superficie'] } ")
+            print(f"Continente: { pais['continente'] } \n")
+            break
+
 
 def ordenar_paises():
 #?Debe comparar valor de strings y ordenarlas de menor a mayor para orden alfabetico
@@ -259,7 +279,6 @@ def ver_paises():
     print("Paises")
 
 def salir():
-#?Cierra el programa
     print("Se cerro el programa")
 
 
@@ -273,10 +292,10 @@ def validar_nombre_pais( datos, verificar_duplicado ):
 #Ciclo while para pedir el dato al usuario hasta que ingrese uno valido
     while True:
         try:
-            nuevo_pais = input("Ingrese nombre del país que desea añadir: ").strip().title()
+            nuevo_pais = input("Ingrese nombre del país: ").strip().title()
 #Valida que se hay ingresado algo por teclado
             if len(nuevo_pais) == 0:
-                raise ValueError("Debe ingresar el nombre del país que desea añadir.\n")
+                raise ValueError("Debe ingresar el nombre del país.\n")
 #Impone un minimo de caracteres para el nombre del pais
             elif len(nuevo_pais) < 3:
                 raise ValueError("El largo del nombre del nuevo país no puede ser inferior a 3 caracteres\n")
@@ -292,7 +311,7 @@ def validar_nombre_pais( datos, verificar_duplicado ):
 #haciendo que se ingrese al bloque elif y dispare el error personalizado.
             elif not all( caracter.isalpha() or caracter.isspace() or caracter in "'-" for caracter in nuevo_pais ):
                 raise ValueError("El nombre del país no acepta caracteres especiales ( $, #, &, etc ).\n")
-#Busca en archivo cvs la existencia del pais y genera el error si la encuentra
+#Busca en la lista "datos" la existencia del pais y genera el error si la encuentra
 #Utiliza el valor del argumento "verificar_duplicado" solo si el flujo de ejecucion proviene de la invocacion de la funcion en la opcion 1
 #Para la opcion 2, "verificar_duplicado" sera False, por lo que no realizara esta evaluacion
             elif verificar_duplicado and existe_pais_en_base_datos( nuevo_pais, datos ):
@@ -383,6 +402,7 @@ def validar_continente_pais():
 
         except ValueError as error :
             print( error )
+            continue
 
 #Verifica si existen coincidencias de nombres en el archivo csv. Recibe 2 argumentos
 #pais: es el nombre del pais que ingreso el usuario
