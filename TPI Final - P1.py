@@ -1,10 +1,8 @@
 #Importacion modulo nativo csv para manipulacion de archivos
 import csv
-#Importacion modulo nativo os para manipulacion de archivos
-import os
 
 #--Funcion inicializacion del programa y funciones del menu
-#Funcion para inciar el programa y visualizacion del menu
+#!Funcion para inciar el programa y visualizacion del menu
 def iniciar_programa():
 
 #Llamado de funcion obtener_datos() para tener disponible la informacion
@@ -43,11 +41,11 @@ def iniciar_programa():
         if opcion == 1:
             grabar_datos_nuevo_pais( datos )
 
-#Opcion 2 - Actualizar datos de 1 pais
+#Opcion 2 - Actualizar datos de un pais
         elif opcion == 2:
             actualizar_datos_pais( datos )
 
-#Opcion 3 - Visualizar informacion sobre los pais
+#Opcion 3 - Visualizar informacion sobre un pais
         elif opcion == 3:
             buscar_pais_nombre( datos )
 
@@ -68,7 +66,7 @@ def iniciar_programa():
             salir()
             break
 
-#!Funcion para leer y obtener los datos del archivo .csv con los datos de los paises
+#!Funcion para leer y obtener los datos del archivo .csv con los datos de los paises ( inicio del programa )
 def obtener_datos():
 #Guarda ruta del archivo en variable dentro del scope de la funcion
     ruta_archivo = "data/paises.csv"
@@ -106,7 +104,7 @@ def obtener_datos():
         print(f"Error inesperado: { type(e).__name__ } = { e }.")
         return []
 
-#!Funcion para escribir datos en el archivo .csv con los datos ingresados por el usuario
+#!Funcion para escribir datos en el archivo .csv con los datos ingresados por el usuario ( opcion 1 del menu )
 def grabar_datos_nuevo_pais(datos):
     print("A continuación deberá ingresar: nombre, poblacion, superficie y continente al que pertenece el pais que desea añadir.\n")
 
@@ -168,7 +166,7 @@ def grabar_datos_nuevo_pais(datos):
     print(f"Superficie en kilometros cuadrados: { superficie_nuevo_pais }")
     print(f"Continente: { continente_nuevo_pais }\n")
 
-#!Funcion para actualizar la informacion de un pais seleccionado por el usuario
+#!Funcion para actualizar la informacion de un pais seleccionado por el usuario ( opcion 2 del menu )
 def actualizar_datos_pais( datos ):
     print("A continuación deberá ingresar: nombre, poblacion y superficie del país que desea modificar.\n")
 
@@ -229,6 +227,7 @@ def actualizar_datos_pais( datos ):
     
     print(f"Pais '{ nombre_pais_a_modificar }' actualizado correctamente.\n")
 
+#!Funcion para buscar un pais por nombre y mostrar su informacion en pantalla ( opcion 3 del menu )
 def buscar_pais_nombre( datos ):
 
     print("Buscar País:")
