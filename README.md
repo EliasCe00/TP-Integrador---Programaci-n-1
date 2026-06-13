@@ -91,20 +91,20 @@ El proyecto utiliza únicamente módulos incluidos en la biblioteca estándar de
 **Entrada**
 
 ```text
-Ingrese nombre del país: Argentina
-Ingrese la población del país: 47000000
-Ingrese la superficie en kilometros cuadrados del país: 2780400
-Ingrese nombre del continente en el cual se encuentra el país que desea añadir: America
+Ingrese nombre del país: Australia
+Ingrese la población del país: 27724744
+Ingrese la superficie en kilometros cuadrados del país: 7741220
+Ingrese nombre del continente en el cual se encuentra el país que desea añadir: Oceania
 ```
 
 **Salida**
 
 ```text
-Se añadió con éxito el país 'Argentina' con la siguiente información:
+Se añadió con éxito el país 'Australia' con la siguiente información:
 
-Poblacion: 47000000
-Superficie en kilometros cuadrados: 2780400
-Continente: America
+Poblacion: 27724744
+Superficie en kilometros cuadrados: 7741220
+Continente: Oceania
 ```
 
 ---
@@ -196,7 +196,7 @@ Chile,19600000,756102,America
 - Documentación del proyecto
 - Modularización
 
-### Elías Ceballos
+### Elías Ceballos Rey
 
 - Creacion de repositorio
 - Desarrollo del sistema
