@@ -280,17 +280,32 @@ def ordenar_paises(datos):
         mostrar_paises(paises_ordenados)
         return paises_ordenados
 
-
-def ver_estadisticas(datos, opcion):
+#funcion que muestra distintas estadisticcas
+def ver_estadisticas(datos):
     
-    print("Estadisticas")
-    print("-" * 20)
+    while True:
+            
+        print("""\n
+            1_Pais con mayor y menor poblacion
+            2_Promedio de poblacion total
+            3_Promedio superficie total
+            4_Cantidad de paises por continente
+            """)
+            
+        try:
+            opcion = int(input("Ingrese el número de la estadistica a consultar: (1 - 4)"))
+            if opcion not in range(1,5):
+                raise ValueError("Fuera de rango. Ingrese 1, 2, 3 o 4.")
+
+            break
+        except ValueError as error:
+            print(error)
 
     if opcion == 1:
-
+        #min() y max() recorren la lista datos buscando el menor y mayor valor de la clave "poblacion" (convertida a entero), devolviendo el diccionario del pais correspondiente
         pais_menos_poblado = min(datos, key=lambda x : int(x["poblacion"]))
         pais_mas_poblado = max(datos, key=lambda x : int(x["poblacion"]))
-    
+
         print("\nEstadisticas: pais con mayor y menor poblacion")
         print("-" * 20)
         print(f"\nPais con menor población: {pais_menos_poblado['nombre']} posee {pais_menos_poblado['poblacion']} habitantes.")
@@ -303,7 +318,7 @@ def ver_estadisticas(datos, opcion):
         print("-" * 20)
 
         suma_poblacion = 0
-        #suma todos los habitantes de todos los paises
+        #recorre la lista datos, obteniendo el valor de poblacion de cada pais y suma las poblaciones
         for pais in datos:
             suma_poblacion += int(pais["poblacion"])
         
@@ -341,9 +356,8 @@ def ver_estadisticas(datos, opcion):
                 if pais["continente"] == continente:
                     contador += 1
             print(f"{continente} : {contador} paises")
-        return
-
-
+    return
+    
 def ver_paises():
 #?Debe mostrar los paises cargados en el archivo
     print("Paises")

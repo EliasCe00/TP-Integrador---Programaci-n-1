@@ -58,22 +58,7 @@ def iniciar_programa():
 
 #Opcion 6 - Ver estadisticas: Pais con mayor y menor poblacion, promedio de poblacion total, promedio superficie total, cantidad de paises por continente
         elif opcion == 6:
-            #mini menu persistente? o vuelve a las opcines del menu?
-            print("""\n
-                1_Pais con mayor y menor poblacion
-                2_Promedio de poblacion total
-                3_Promedio superficie total
-                4_Cantidad de paises por continente
-                """)
-            try:
-                estadistica = int(input("Ingrese el número de la estadistica a consultar: (1 - 4)"))
-                if opcion not in range(1,5):
-                    raise ValueError("Fuera de rango. Ingrese 1, 2, 3 o 4.")
-
-                ver_estadisticas(datos, estadistica)
-
-            except ValueError as error:
-                print(error)
+            ver_estadisticas(datos)
 
 #Opcion 7 - Salir del programa
         elif opcion == 7:
