@@ -139,3 +139,46 @@ def existe_pais_en_base_datos( pais, datos ):
 #Retorna False si no se encontraron coincidencias, retorna True si ya existe el nombre
     return existe_pais
 
+def filtrar_rango(datos, clave):
+    
+    while True:
+        try:
+            rango_minimo = int(input(f"Ingrese el rango minimo de {clave}: "))
+            if rango_minimo < 0:
+                raise ValueError("Este campo no debe ser negativo.")
+            break
+        except ValueError as error:
+            print(error)
+
+    while True:
+        try:
+            rango_maximo = int(input(f"Ingrese el rango maximo de {clave}: "))
+            if rango_maximo < rango_minimo:
+                raise ValueError("El rango maximo no puede ser menor que el rango minimo")
+            break
+        except ValueError as error:
+            print(error)
+
+    resultados = []
+    for pais in datos:
+        if int(pais[clave]) >= rango_minimo and int(pais[clave]) <= rango_maximo:
+            resultados.append(pais)
+    
+    return resultados
+
+#funcion para mostrar los paises en pantalla
+def mostrar_paises(lista_paises):
+
+    #si la lista esta vacia frena la ejecucion
+    if len(lista_paises) == 0:
+        return
+    
+    #imprime los elementos de la lista
+    for pais in lista_paises:
+        print("----------")
+        print(f"Nombre: {pais['nombre']}")
+        print(f"Población: {pais['poblacion']}")
+        print(f"Superficie: {pais['superficie']}")
+        print(f"Continente: {pais['continente']}")
+        print("----------")
+

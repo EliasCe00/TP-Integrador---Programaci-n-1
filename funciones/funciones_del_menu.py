@@ -2,7 +2,7 @@
 import csv
 
 #importacion funciones auxiliares
-from .funciones_auxiliares import ( validar_nombre_pais, validar_poblacion_pais, validar_superficie_pais, validar_continente_pais, existe_pais_en_base_datos )
+from .funciones_auxiliares import ( validar_nombre_pais, validar_poblacion_pais, validar_superficie_pais, validar_continente_pais, existe_pais_en_base_datos, filtrar_rango, mostrar_paises )
 
 #!Funcion para leer y obtener los datos del archivo .csv con los datos de los paises ( inicio del programa )
 def obtener_datos():
@@ -192,64 +192,54 @@ def buscar_pais_nombre( datos ):
             break
 
 
-def filtrar_paises(datos, filtro):
+#funcion para filtar paises, recibe la lista datos como parametro y filtro que cumple la funcion de seleccionar el metodo de filtrado
+def filtrar_paises(datos):
+    while True:
+        print("""\n
+        1_Continente
+        2_Poblacion
+        3_Superficie
+        """)
+
+        try:
+            filtro  = int(input("Ingrese el criterio de filtrado: (1 - 3)"))
+            if filtro not in range(1,4):
+                raise ValueError("Fuera de rango. Ingrese 1, 2 o 3.")
+            break
+        except ValueError as error:
+            print(error)
     
     resultados = []
 
     #filtrar por continente
     if filtro == 1:
-        
+    
         continente_ingresado = input("Ingrese un continente: ")
+    
         for pais in datos:
             if continente_ingresado == pais["continente"]:
                 resultados.append(pais)
-        
+    
         if len(resultados) == 0:
             print("No se econtraron paises que correspondan al criterio de busqueda")
 
     #filtrar por rango de poblacion
     elif filtro == 2:
 
-        rango_minimo = int(input("Ingrese el rango minimo de poblacion: "))
-        rango_maximo = int(input("Ingrese el rango maximo de poblacion: "))
-
-        for pais in datos:
-            if int(pais["poblacion"]) >= rango_minimo and int(pais["poblacion"]) <= rango_maximo:
-                resultados.append(pais)
-            
+        resultados = filtrar_rango(datos, "poblacion")    
         if len(resultados) == 0:
             print("No se encontraron paises con la poblacion dentro del rango establecido.")
 
     #filtrar por rango de superficie
     elif filtro == 3:
 
-        rango_minimo = int(input("Ingrese el rango minimo de superficie: "))
-        rango_maximo = int(input("Ingrese el rango maximo de superficie: "))
-
-        for pais in datos:
-            if int(pais["superficie"]) >= rango_minimo and int(pais["superficie"]) <= rango_maximo:
-                resultados.append(pais)
-
+        resultados = filtrar_rango(datos, "superficie")
         if len(resultados) == 0:
             print("No se encontraron paises con la superficie dentro del rango establecido.")
 
+    mostrar_paises(resultados)
     return resultados
 
-#funcion para mostrar los paises en pantalla
-def mostrar_paises(lista_paises):
-
-    #si la lista esta vacia frena la ejecucion
-    if len(lista_paises) == 0:
-        return
-    
-    #imprime los elementos de la lista
-    for pais in lista_paises:
-        print("----------")
-        print(f"Nombre: {pais['nombre']}")
-        print(f"Población: {pais['poblacion']}")
-        print(f"Superficie: {pais['superficie']}")
-        print(f"Continente: {pais['continente']}")
-        print("----------")
 
 #funcion para ordenar paises
 def ordenar_paises(datos, filtro):
