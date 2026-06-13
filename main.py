@@ -1,5 +1,5 @@
 #Importacion de funciones del menu
-from funciones.funciones_del_menu import obtener_datos, grabar_datos_nuevo_pais, actualizar_datos_pais, buscar_pais_nombre, filtrar_paises, ver_estadisticas, salir
+from funciones.funciones_del_menu import obtener_datos, grabar_datos_nuevo_pais, actualizar_datos_pais, buscar_pais_nombre, filtrar_paises, ordenar_paises, ver_estadisticas, salir
 
 #Funcion para inciar el programa y visualizacion del menu
 def iniciar_programa():
@@ -54,23 +54,7 @@ def iniciar_programa():
 
 #Opcion 5 - Ordenar paises segun orden alfabetico, poblacion y superficie
         elif opcion == 5:
-
-            #mini menu persistente? o vuelve a las opcines del menu?
-            print("""\n
-                1_Alfabetico
-                2_Poblacion
-                3_Superficie
-                """)
-            try:
-                filtro = int(input("Ingrese el criterio de ordenamiento: (1 - 3)"))
-                if filtro not in range(1,4):
-                    raise ValueError("Fuera de rango. Ingrese 1, 2 o 3.")
-
-                paises_ordenados = ordenar_paises(datos, filtro)
-                mostrar_paises(paises_ordenados)
-
-            except ValueError as error:
-                print(error)
+            ordenar_paises(datos)
 
 #Opcion 6 - Ver estadisticas: Pais con mayor y menor poblacion, promedio de poblacion total, promedio superficie total, cantidad de paises por continente
         elif opcion == 6:

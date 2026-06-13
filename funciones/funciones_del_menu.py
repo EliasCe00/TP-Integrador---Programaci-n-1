@@ -242,22 +242,43 @@ def filtrar_paises(datos):
 
 
 #funcion para ordenar paises
-def ordenar_paises(datos, filtro):
+def ordenar_paises(datos):
+    #imprime el menu de forma repetitiva hasta que se ingrese un valor que cumpla con el criterio indicado
+    while True:
+        print("""\n
+            1_Alfabetico
+            2_Poblacion
+            3_Superficie
+            """)
+        #valida que la opcion ingresada este en el rango indicado
+        try:
+            filtro = int(input("Ingrese el criterio de ordenamiento: (1 - 3)"))
+            if filtro not in range(1,4):
+                raise ValueError("Fuera de rango. Ingrese 1, 2 o 3.")
+            #detiene la ejecucion del bucle para continuar con las instrucciones de la funcion
+            break
+        except ValueError as error:
+            print(error)
+
+    #ordena los paises por nombre en orden alfabetico
     if filtro == 1:
         #uso de sorted() para ordenar la lista
         #expresion lambda para pasar el criterio de ordenamiento
         paises_ordenados = sorted(datos, key=lambda x : x["nombre"])
         print("Paises ordenados alfabeticamente")
 
+    #ordena los paises por cantidad de habitantes en orden ascendente
     elif filtro == 2:
         paises_ordenados = sorted(datos, key=lambda x : int(x["poblacion"]))
         print("Paises ordenados por poblacion")
 
+    #ordena los paises de menor a mayor por superficie
     elif filtro == 3:
         paises_ordenados = sorted(datos, key=lambda x : int(x["superficie"]))
         print("Paises ordenados por superficie")
 
-    return paises_ordenados
+        mostrar_paises(paises_ordenados)
+        return paises_ordenados
 
 
 def ver_estadisticas(datos, opcion):
