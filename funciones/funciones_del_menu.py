@@ -202,7 +202,7 @@ def filtrar_paises(datos):
         """)
 
         try:
-            filtro  = int(input("Ingrese el criterio de filtrado: (1 - 3)"))
+            filtro  = int(input("Ingrese el criterio de filtrado: (1 - 3): "))
             if filtro not in range(1,4):
                 raise ValueError("Fuera de rango. Ingrese 1, 2 o 3.")
             break
@@ -214,7 +214,7 @@ def filtrar_paises(datos):
     #filtrar por continente
     if filtro == 1:
     
-        continente_ingresado = input("Ingrese un continente: ")
+        continente_ingresado = validar_continente_pais()
     
         for pais in datos:
             if continente_ingresado == pais["continente"]:
@@ -252,7 +252,7 @@ def ordenar_paises(datos):
             """)
         #valida que la opcion ingresada este en el rango indicado
         try:
-            filtro = int(input("Ingrese el criterio de ordenamiento: (1 - 3)"))
+            filtro = int(input("Ingrese el criterio de ordenamiento: (1 - 3): "))
             if filtro not in range(1,4):
                 raise ValueError("Fuera de rango. Ingrese 1, 2 o 3.")
             #detiene la ejecucion del bucle para continuar con las instrucciones de la funcion
@@ -293,7 +293,7 @@ def ver_estadisticas(datos):
             """)
             
         try:
-            opcion = int(input("Ingrese el número de la estadistica a consultar: (1 - 4)"))
+            opcion = int(input("Ingrese el número de la estadistica a consultar: (1 - 4): "))
             if opcion not in range(1,5):
                 raise ValueError("Fuera de rango. Ingrese 1, 2, 3 o 4.")
 
@@ -357,10 +357,7 @@ def ver_estadisticas(datos):
                     contador += 1
             print(f"{continente} : {contador} paises")
     return
-    
-def ver_paises():
-#?Debe mostrar los paises cargados en el archivo
-    print("Paises")
+
 
 def salir():
     print("Se cerro el programa")

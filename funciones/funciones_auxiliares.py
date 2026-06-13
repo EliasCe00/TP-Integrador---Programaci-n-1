@@ -94,16 +94,27 @@ def validar_superficie_pais():
 
 #Validacion del continente
 def validar_continente_pais():
-#Lista con los nombres de los continentes validos
-    continentes_validos = [ "America", "Europa", "Asia", "Africa", "Oceania", "Antartida", "América", "África", "Antártida", "Oceanía" ]
-
+# Diccionario que normaliza distintas formas de escritura de los continentes
+# al estandar utilizado en el archivo CSV.
+    continentes_validos = {
+    "america": "América",
+    "américa": "América",
+    "europa": "Europa",
+    "asia": "Asia",
+    "africa": "Africa",
+    "áfrica": "Africa",
+    "oceania": "Oceania",
+    "oceanía": "Oceania",
+    "antartida": "Antartida",
+    "antártida": "Antartida"
+}
 #Ciclo while para pedir el dato al usuario hasta que ingrese uno valido
     while True:
         try:
-            nuevo_continente = input("Ingrese nombre del continente en el cual se encuentra el país que desea añadir: ").strip().capitalize()
+            nuevo_continente = input("Ingrese nombre del continente: ").strip().lower()
 
             if len( nuevo_continente ) == 0:
-                raise ValueError("Debe ingresar el nombre del contintente al que pertenece el país.\n")
+                raise ValueError("Debe ingresar el nombre del contintente.\n")
 
 #La funcion all() evalua caracter por caracter. Si un caracter incumple una de las condiciones dentro de all(),
 #retornara False y el operador not, invertira el valor booleano a True,
@@ -114,7 +125,7 @@ def validar_continente_pais():
             elif nuevo_continente not in continentes_validos:
                 raise ValueError(f"No se encontraron coincidencias para '{ nuevo_continente }'. Ingrese un continente válido.\n")
 
-            return nuevo_continente
+            return continentes_validos[nuevo_continente]
 
         except ValueError as error :
             print( error )
