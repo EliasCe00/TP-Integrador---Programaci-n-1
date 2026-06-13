@@ -192,24 +192,146 @@ def buscar_pais_nombre( datos ):
             break
 
 
-def ordenar_paises():
-#?Debe comparar valor de strings y ordenarlas de menor a mayor para orden alfabetico
-    print("Paises ordenados alfabeticamente")
+def filtrar_paises(datos, filtro):
+    
+    resultados = []
 
-#?Debe comparar poblacion y ordenarlos de menor a mayor
-    print("Paises ordenados por poblacion")
+    #filtrar por continente
+    if filtro == 1:
+        
+        continente_ingresado = input("Ingrese un continente: ")
+        for pais in datos:
+            if continente_ingresado == pais["continente"]:
+                resultados.append(pais)
+        
+        if len(resultados) == 0:
+            print("No se econtraron paises que correspondan al criterio de busqueda")
 
-#?Debe comparar superficie de paises y ordenar de menor a mayor
-    print("Paises ordenados por superficie")
+    #filtrar por rango de poblacion
+    elif filtro == 2:
 
-def ver_estadisticas():
+        rango_minimo = int(input("Ingrese el rango minimo de poblacion: "))
+        rango_maximo = int(input("Ingrese el rango maximo de poblacion: "))
+
+        for pais in datos:
+            if int(pais["poblacion"]) >= rango_minimo and int(pais["poblacion"]) <= rango_maximo:
+                resultados.append(pais)
+            
+        if len(resultados) == 0:
+            print("No se encontraron paises con la poblacion dentro del rango establecido.")
+
+    #filtrar por rango de superficie
+    elif filtro == 3:
+
+        rango_minimo = int(input("Ingrese el rango minimo de superficie: "))
+        rango_maximo = int(input("Ingrese el rango maximo de superficie: "))
+
+        for pais in datos:
+            if int(pais["superficie"]) >= rango_minimo and int(pais["superficie"]) <= rango_maximo:
+                resultados.append(pais)
+
+        if len(resultados) == 0:
+            print("No se encontraron paises con la superficie dentro del rango establecido.")
+
+    return resultados
+
+#funcion para mostrar los paises en pantalla
+def mostrar_paises(lista_paises):
+
+    #si la lista esta vacia frena la ejecucion
+    if len(lista_paises) == 0:
+        return
+    
+    #imprime los elementos de la lista
+    for pais in lista_paises:
+        print("----------")
+        print(f"Nombre: {pais['nombre']}")
+        print(f"Población: {pais['poblacion']}")
+        print(f"Superficie: {pais['superficie']}")
+        print(f"Continente: {pais['continente']}")
+        print("----------")
+
+#funcion para ordenar paises
+def ordenar_paises(datos, filtro):
+    if filtro == 1:
+        #uso de sorted() para ordenar la lista
+        #expresion lambda para pasar el criterio de ordenamiento
+        paises_ordenados = sorted(datos, key=lambda x : x["nombre"])
+        print("Paises ordenados alfabeticamente")
+
+    elif filtro == 2:
+        paises_ordenados = sorted(datos, key=lambda x : int(x["poblacion"]))
+        print("Paises ordenados por poblacion")
+
+    elif filtro == 3:
+        paises_ordenados = sorted(datos, key=lambda x : int(x["superficie"]))
+        print("Paises ordenados por superficie")
+
+    return paises_ordenados
+
+
+def ver_estadisticas(datos, opcion):
+    
     print("Estadisticas")
-#?Debe comparar poblacion de paises y mostrar los dos extremos [0] y [-1]
-    print("Estadisticas: pais con mayor y menor poblacion")
-#?Debe sumar la superficie de todos los paises y realizar promedio
-    print("Estadisticas: promedio de superficie")
-#?Debe verificar cuantos paises comparten continente y mostrarlo
-    print("Estadisticas: cantidad de paises por continente")
+    print("-" * 20)
+
+    if opcion == 1:
+
+        pais_menos_poblado = min(datos, key=lambda x : int(x["poblacion"]))
+        pais_mas_poblado = max(datos, key=lambda x : int(x["poblacion"]))
+    
+        print("\nEstadisticas: pais con mayor y menor poblacion")
+        print("-" * 20)
+        print(f"\nPais con menor población: {pais_menos_poblado['nombre']} posee {pais_menos_poblado['poblacion']} habitantes.")
+        print(f"Pais con mayor población: {pais_mas_poblado['nombre']} posee {pais_mas_poblado['poblacion']} habitantes.")
+        return
+
+    elif opcion == 2:
+
+        print("\nEstadisticas: promedio de población")
+        print("-" * 20)
+
+        suma_poblacion = 0
+        #suma todos los habitantes de todos los paises
+        for pais in datos:
+            suma_poblacion += int(pais["poblacion"])
+        
+        promedio_poblacion = suma_poblacion / len(datos)
+
+        print(f"El promedio de poblacion es: {promedio_poblacion}")
+        return
+    
+    elif opcion == 3:
+        print("\nEstadisticas: promedio de superficie")
+        print("-" * 20)
+    
+        suma_superficie = 0
+        #suma todas las superficies de todos los paises
+        for pais in datos:
+            suma_superficie += int(pais["superficie"])
+    
+        promedio_superficie = suma_superficie / len(datos)
+
+        print(f"El promedio de superficie es: {promedio_superficie}")
+        return
+
+    elif opcion == 4:
+        print("Estadisticas: cantidad de paises por continente")
+        print("-" * 20)
+
+        #obtener continentes
+        continentes = set()
+        for pais in datos:
+            continentes.add(pais["continente"])
+
+        for continente in continentes:
+            contador = 0
+            for pais in datos:
+                if pais["continente"] == continente:
+                    contador += 1
+            print(f"{continente} : {contador} paises")
+        return
+
 
 def ver_paises():
 #?Debe mostrar los paises cargados en el archivo

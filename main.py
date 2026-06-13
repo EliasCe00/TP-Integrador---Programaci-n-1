@@ -50,15 +50,62 @@ def iniciar_programa():
 
 #Opcion 4 - Filtrar paises segun continente, poblacion o superficie
         elif opcion == 4:
-            print("opcion 4")
+
+            #mini menu persistente? o vuelve a las opcines del menu?
+            print("""\n
+                1_Continente
+                2_Poblacion
+                3_Superficie
+                """)
+            try:
+                filtro  = int(input("Ingrese el criterio de filtrado: (1 - 3)"))
+                if filtro not in range(1,4):
+                    raise ValueError("Fuera de rango. Ingrese 1, 2 o 3.")
+            
+                paises_filtrados = filtrar_paises(datos, filtro)
+                mostrar_paises(paises_filtrados)
+
+            except ValueError as error:
+                print(error)
 
 #Opcion 5 - Ordenar paises segun orden alfabetico, poblacion y superficie
         elif opcion == 5:
-            print("opcion 5")
+
+            #mini menu persistente? o vuelve a las opcines del menu?
+            print("""\n
+                1_Alfabetico
+                2_Poblacion
+                3_Superficie
+                """)
+            try:
+                filtro = int(input("Ingrese el criterio de ordenamiento: (1 - 3)"))
+                if filtro not in range(1,4):
+                    raise ValueError("Fuera de rango. Ingrese 1, 2 o 3.")
+
+                paises_ordenados = ordenar_paises(datos, filtro)
+                mostrar_paises(paises_ordenados)
+
+            except ValueError as error:
+                print(error)
 
 #Opcion 6 - Ver estadisticas: Pais con mayor y menor poblacion, promedio de poblacion total, promedio superficie total, cantidad de paises por continente
         elif opcion == 6:
-            print("opcion 6")
+            #mini menu persistente? o vuelve a las opcines del menu?
+            print("""\n
+                1_Pais con mayor y menor poblacion
+                2_Promedio de poblacion total
+                3_Promedio superficie total
+                4_Cantidad de paises por continente
+                """)
+            try:
+                estadistica = int(input("Ingrese el número de la estadistica a consultar: (1 - 4)"))
+                if opcion not in range(1,5):
+                    raise ValueError("Fuera de rango. Ingrese 1, 2, 3 o 4.")
+
+                ver_estadisticas(datos, estadistica)
+
+            except ValueError as error:
+                print(error)
 
 #Opcion 7 - Salir del programa
         elif opcion == 7:
