@@ -151,6 +151,27 @@ Dato ingresado inválido. Debe ingresar un número entero mayor o igual a 1.
 
 ---
 
+### Ejemplo 4: Filtrar Paises
+
+**Entrada**
+
+```text
+Ingrese el criterio de filtrado: (1 - 3): 1
+Ingrese nombre del continente: Europa
+```
+
+**Salida**
+
+```text
+Nombre: España
+Población: 49000000
+Superficie: 505000
+Continente: Europa
+----------
+```
+
+---
+
 ## Formato del archivo CSV
 
 El archivo `paises.csv` debe respetar la siguiente estructura:
