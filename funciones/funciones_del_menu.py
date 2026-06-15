@@ -195,14 +195,13 @@ def buscar_pais_nombre( datos ):
 #funcion para filtar paises, recibe la lista datos como parametro y filtro que cumple la funcion de seleccionar el metodo de filtrado
 def filtrar_paises(datos):
     while True:
-        print("""\n
-        1_Continente
-        2_Poblacion
-        3_Superficie
-        """)
+        print("\nFiltrar paises por: ")
+        print("\n1_Continente")
+        print("2_Poblacion")
+        print("3_Superficie")
 
         try:
-            filtro  = int(input("Ingrese el criterio de filtrado: (1 - 3): "))
+            filtro  = int(input("\nIngrese el criterio de filtrado: (1 - 3): "))
             if filtro not in range(1,4):
                 raise ValueError("Fuera de rango. Ingrese 1, 2 o 3.")
             break
@@ -221,21 +220,21 @@ def filtrar_paises(datos):
                 resultados.append(pais)
     
         if len(resultados) == 0:
-            print("No se econtraron paises que correspondan al criterio de busqueda")
+            print("\nNo se econtraron paises que correspondan al criterio de busqueda")
 
     #filtrar por rango de poblacion
     elif filtro == 2:
 
         resultados = filtrar_rango(datos, "poblacion")    
         if len(resultados) == 0:
-            print("No se encontraron paises con la poblacion dentro del rango establecido.")
+            print("\nNo se encontraron paises con la poblacion dentro del rango establecido.")
 
     #filtrar por rango de superficie
     elif filtro == 3:
 
         resultados = filtrar_rango(datos, "superficie")
         if len(resultados) == 0:
-            print("No se encontraron paises con la superficie dentro del rango establecido.")
+            print("\nNo se encontraron paises con la superficie dentro del rango establecido.")
 
     mostrar_paises(resultados)
     return resultados
@@ -245,14 +244,13 @@ def filtrar_paises(datos):
 def ordenar_paises(datos):
     #imprime el menu de forma repetitiva hasta que se ingrese un valor que cumpla con el criterio indicado
     while True:
-        print("""\n
-            1_Alfabetico
-            2_Poblacion
-            3_Superficie
-            """)
+        print("\nOrdenar paises por:")
+        print("\n1_Alfabetico")
+        print("2_Poblacion")    
+        print("3_Superficie")    
         #valida que la opcion ingresada este en el rango indicado
         try:
-            filtro = int(input("Ingrese el criterio de ordenamiento: (1 - 3): "))
+            filtro = int(input("\nIngrese el criterio de ordenamiento: (1 - 3): "))
             if filtro not in range(1,4):
                 raise ValueError("Fuera de rango. Ingrese 1, 2 o 3.")
             #detiene la ejecucion del bucle para continuar con las instrucciones de la funcion
@@ -265,35 +263,33 @@ def ordenar_paises(datos):
         #uso de sorted() para ordenar la lista
         #expresion lambda para pasar el criterio de ordenamiento
         paises_ordenados = sorted(datos, key=lambda x : x["nombre"])
-        print("Paises ordenados alfabeticamente")
+        print("\nPaises ordenados alfabeticamente")
 
     #ordena los paises por cantidad de habitantes en orden ascendente
     elif filtro == 2:
         paises_ordenados = sorted(datos, key=lambda x : int(x["poblacion"]))
-        print("Paises ordenados por poblacion")
+        print("\nPaises ordenados por poblacion")
 
     #ordena los paises de menor a mayor por superficie
     elif filtro == 3:
         paises_ordenados = sorted(datos, key=lambda x : int(x["superficie"]))
-        print("Paises ordenados por superficie")
+        print("\nPaises ordenados por superficie")
 
-        mostrar_paises(paises_ordenados)
-        return paises_ordenados
+    mostrar_paises(paises_ordenados)
+    return paises_ordenados
 
 #funcion que muestra distintas estadisticcas
 def ver_estadisticas(datos):
     
     while True:
-            
-        print("""\n
-            1_Pais con mayor y menor poblacion
-            2_Promedio de poblacion total
-            3_Promedio superficie total
-            4_Cantidad de paises por continente
-            """)
+        print("\nConsultar estadisticas:")
+        print("\n1_Pais con mayor y menor poblacion")
+        print("2_Promedio de poblacion total")
+        print("3_Promedio superficie total")
+        print("4_Cantidad de paises por continente")
             
         try:
-            opcion = int(input("Ingrese el número de la estadistica a consultar: (1 - 4): "))
+            opcion = int(input("\nIngrese la opcion a consultar: (1 - 4): "))
             if opcion not in range(1,5):
                 raise ValueError("Fuera de rango. Ingrese 1, 2, 3 o 4.")
 
@@ -306,7 +302,7 @@ def ver_estadisticas(datos):
         pais_menos_poblado = min(datos, key=lambda x : int(x["poblacion"]))
         pais_mas_poblado = max(datos, key=lambda x : int(x["poblacion"]))
 
-        print("\nEstadisticas: pais con mayor y menor poblacion")
+        print("\nEstadistica: pais con mayor y menor poblacion")
         print("-" * 20)
         print(f"\nPais con menor población: {pais_menos_poblado['nombre']} posee {pais_menos_poblado['poblacion']} habitantes.")
         print(f"Pais con mayor población: {pais_mas_poblado['nombre']} posee {pais_mas_poblado['poblacion']} habitantes.")
@@ -314,7 +310,7 @@ def ver_estadisticas(datos):
 
     elif opcion == 2:
 
-        print("\nEstadisticas: promedio de población")
+        print("\nEstadistica: promedio de población")
         print("-" * 20)
 
         suma_poblacion = 0
@@ -328,7 +324,7 @@ def ver_estadisticas(datos):
         return
     
     elif opcion == 3:
-        print("\nEstadisticas: promedio de superficie")
+        print("\nEstadistica: promedio de superficie")
         print("-" * 20)
     
         suma_superficie = 0
@@ -342,7 +338,7 @@ def ver_estadisticas(datos):
         return
 
     elif opcion == 4:
-        print("Estadisticas: cantidad de paises por continente")
+        print("\nEstadistica: cantidad de paises por continente")
         print("-" * 20)
 
         #obtener continentes

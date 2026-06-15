@@ -8,7 +8,7 @@ def iniciar_programa():
     datos = obtener_datos()
 #Menu de opciones
     while True:
-        print("---- Gestión de Datos de Países ----\n")
+        print("\n---- Gestión de Datos de Países ----\n")
         print("1. Añadir país a la base de datos.")
         print("2. Actualizar datos ( Población y Superficie ).")
         print("3. Visualizar información sobre países.")

@@ -16,6 +16,7 @@ Link canal Jeremias Juarez:
 https://youtu.be/ZVSFdcMWJbg
 
 Link canal Elias Ceballos Rey:
+https://youtu.be/4QzG_tLb9qg
 
 
 ## Funcionalidades

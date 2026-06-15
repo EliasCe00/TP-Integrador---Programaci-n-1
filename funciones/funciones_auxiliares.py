@@ -186,7 +186,6 @@ def mostrar_paises(lista_paises):
     
     #imprime los elementos de la lista
     for pais in lista_paises:
-        print("----------")
         print(f"Nombre: {pais['nombre']}")
         print(f"Población: {pais['poblacion']}")
         print(f"Superficie: {pais['superficie']}")
