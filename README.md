@@ -12,7 +12,11 @@ La información se almacena de forma persistente en un archivo CSV y se carga en
 
 ## Link a video explicativo en Youtube
 
-www.youtube.com
+Link canal Jeremias Juarez:
+https://youtu.be/ZVSFdcMWJbg
+
+Link canal Elias Ceballos Rey:
+
 
 ## Funcionalidades
 
